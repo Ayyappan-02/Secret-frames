@@ -1,6 +1,6 @@
 import cv2
 
-from utils import _split_frames, _extract_frame
+from steg.utils import _split_frames, _extract_frame
 from stegano import lsb
 import skvideo.io
 

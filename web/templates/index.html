@@ -5,33 +5,55 @@ Secret-Frames | photo
 {% endblock%}
 
 {% block head %}
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 
 {% block body %}
-<p>
-	<div>
-		<a href="/encrypt"> Encryption </a>
-		<br><br>
-		<form action="/encrypt" method="POST" enctype="multipart/form-data">
+<div class="container right-panel-active">
+	<!-- Sign Up -->
+	<div class="container__form container--signup">
+		<form action="/encrypt" method="POST" enctype="multipart/form-data" class="form" id="form1">
+			<h2 class="form__title">Embed Data</h2>
+			<p> The type of file you are embedding : </p>
 			<input type="radio" id="type" name="type" required value="photo">
-			<label for="photo"> Photo </label><br>
+			<label for="photo"> Photo </label>
 			<input type="radio" id="type" name="type" value="video">
 			<label for="video"> Video </label><br>
-			<input type="file" name="cover" required>
-			<input type="file" name="steg" required>
-			<button type="submit"> Upload </button>
+			<p> Cover video </p>
+			<input type="file" name="cover" required><br>
+			<p> Secret file </p>
+			<input type="file" name="steg" required> <br>
+			<button class="btn">Embed</button>
 		</form>
-		<br><br>
-		<a href="/decrypt"> Decrytion </a>
-		<br><br>
-		<form action="/decrypt" method="POST" enctype="multipart/form-data">
+	</div>
+
+	<!-- Sign In -->
+	<div class="container__form container--signin">
+		<form action="/decrypt" method="POST" enctype="multipart/form-data" class="form" id="form2">
+			<h2 class="form__title">Extract Data</h2>
+			<p>The type of file you are extracting : </p>
 			<input type="radio" id="type" name="type" required value="photo">
-			<label for="photo"> Photo </label><br>
+			<label for="photo"> Photo </label>
 			<input type="radio" id="type" name="type" value="video">
 			<label for="video"> Video </label><br>
+			<p> Stego file </p>
 			<input type="file" name="data">
-			<button type="submit"> Upload </button>
+			<button class="btn">Extract</button>
 		</form>
-</p>
+	</div>
+
+	<!-- Overlay -->
+	<div class="container__overlay">
+		<div class="overlay">
+			<div class="overlay__panel overlay--left">
+				<button class="btn" id="signIn">Reveal data</button>
+			</div>
+			<div class="overlay__panel overlay--right">
+				<button class="btn" id="signUp">Hide data</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 {% endblock %}

@@ -2,7 +2,7 @@ import cv2
 import random
 from stegano import lsb
 
-from utils import _split_frames, _embed_frame, _wrap_up
+from steg.utils import _split_frames, _embed_frame, _wrap_up
 
 def steg_photo(path1, path2):
 	steg_key = "frames="
