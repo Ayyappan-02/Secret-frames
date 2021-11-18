@@ -49,7 +49,3 @@ def steg_video(path1, path2):
 	path3 = _wrap_up(path1, frame_array1, size1) 
 	print(path3)
 	return path3
-
-path1 = "/home/osboxes/Secret-frames/lol/video.mp4"
-path2 = "/home/osboxes/Secret-frames/lol/data.mp4"
-steg_video(path1, path2)

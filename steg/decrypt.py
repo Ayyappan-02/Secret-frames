@@ -58,6 +58,3 @@ def steg_video(path):
 	writer.close()
 	print(outputfile)
 	return outputfile
-
-path = "/home/osboxes/Secret-frames/lol/cover.mp4"
-steg_video(path)
