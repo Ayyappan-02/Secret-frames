@@ -12,6 +12,8 @@ moviepy = "*"
 flask = "*"
 rsa = "*"
 cryptography = "*"
+stegano = "*"
+scikit-video = "*"
 
 [dev-packages]
 
