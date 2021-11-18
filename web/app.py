@@ -39,10 +39,16 @@ def encrypter():
 @app.route("/decrypt", methods=["GET", "POST"])
 def decrypter():
 	if request.method =="POST":
+		secret_type = request.form["type"]
 		f = request.files['data']
 		filename = secure_filename(f.filename)
 		f.save(app.config['DECRYPT_UPLOAD_FOLDER'] + filename)
-		return 'file uploaded'
+		path = os.path.abspath(app.config['DECRYPT_UPLOAD_FOLDER'] + filename)
+		if secret_type == "photo":
+			path = decrypt.steg_photo(path)
+		else:
+			path = decrypt.steg_video(path)
+		return send_file(path, as_attachment=True)
 	return render_template("decrypt.html")
 	
 

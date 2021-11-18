@@ -2,6 +2,9 @@ import cv2, pywt
 import random
 import numpy as np
 import moviepy.editor as mp
+import skvideo.io
+from subprocess import call, STDOUT
+import os
 
 
 def _split_frames(vidObj):
@@ -53,21 +56,33 @@ def _embed_frame(frame_array, steg_img, frames):
 	return frame_array, frames
 
 def _wrap_up(path, frame_array, size):
-	fps = 25
 	tmp = path[:path.rindex("/")+1] + "tmp" + path[path.rindex("/")+1:]
-	print(tmp)
-	out = cv2.VideoWriter(tmp, cv2.VideoWriter_fourcc(*"mp4v"), fps, size)
+	outputfile = tmp   #our output filename
+	writer = skvideo.io.FFmpegWriter(outputfile, outputdict={
+	  '-vcodec': 'libx264rgb',  #use the h.264 codec
+	  '-crf': '0',           #set the constant rate factor to 0, which is lossless
+	  '-preset':'veryslow'   #the slower the better compression, in princple, try 
+	}) 
 	for i in range(len(frame_array)):
-		out.write(frame_array[i])
-	out.release()
-	"""
+	    writer.writeFrame(frame_array[i][:,:,::-1])
+	writer.close()
 	myclip = mp.VideoFileClip(path)
-	audio_tmp = path[:path.rindex(".")] + "audio.mp3"
+	audio_tmp = path[:path.rindex("/")+1] + "audio_tmp.mp3"
 	myclip.audio.write_audiofile(audio_tmp)
-	clip = mp.VideoFileClip(tmp)
-	audioClip = mp.AudioFileClip(audio_tmp)
-	cover_video = clip.set_audio(audioClip)
-	cover_path = path[:path.rindex("/")+1] + "cover_" + path[path.rindex("/")+1:]
-	cover_video.write_videofile(cover_path)
-	"""
-	return tmp
+	cover_path = path[:path.rindex("/")+1] + "cover.mp4"
+	call(["ffmpeg", "-i", tmp, "-i", audio_tmp, "-codec", "copy", cover_path, "-y"],stdout=open(os.devnull, "w"), stderr=STDOUT)
+	return cover_path
+
+def _extract_channel(img):
+	(B,G,R) = cv2.split(img)
+	coeff = pywt.dwt2(R, 'haar', mode='periodization')
+	LL, (LH, HL, HH) = coeff
+	channel = np.uint8(HH)
+	return channel
+
+def _extract_frame(frame_array, r, g, b):
+	r_steg = _extract_channel(frame_array[r])
+	g_steg = _extract_channel(frame_array[g])
+	b_steg = _extract_channel(frame_array[b])
+	steg = cv2.merge([b_steg, g_steg, r_steg])
+	return steg 
