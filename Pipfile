@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pywavelets = "*"
+opencv-python = "*"
+matplotlib = "*"
+ffmpeg = "*"
+moviepy = "*"
+flask = "*"
+rsa = "*"
+cryptography = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
