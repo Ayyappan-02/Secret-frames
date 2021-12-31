@@ -14,4 +14,4 @@ Secret frames *hides* your data in a video. It embeds data in transfer domain by
    export FLASK_APP=app.py
    flask run
  ```
- - You can open the browser at `http://localhost:5000/` to check out the web application.
+ - Open up the browser at `http://localhost:5000/` to check out the web application.
